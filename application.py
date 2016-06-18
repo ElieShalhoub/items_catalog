@@ -120,10 +120,10 @@ def disconnect():
         del login_session['user_id']
         del login_session['provider']
         flash("You have successfully been logged out.")
-        return redirect(url_for('showRestaurants'))
+        return redirect(url_for('showCategories'))
     else:
         flash("You were not logged in")
-        return redirect(url_for('showRestaurants'))
+        return redirect(url_for('showCategories'))
 
 @app.route('/fbdisconnect')
 def fbdisconnect():
@@ -305,8 +305,8 @@ def restaurantsJSON():
 
 #Show all restaurants
 @app.route('/')
-@app.route('/restaurant/')
-def showRestaurants():
+@app.route('/catalog/')
+def showCategories():
     restaurants = session.query(Restaurant).order_by(asc(Restaurant.name))
     if 'username' not in login_session:
         return render_template('publicrestaurants.html', restaurants=restaurants)
@@ -324,7 +324,7 @@ def newRestaurant():
         session.add(newRestaurant)
         flash('New Restaurant %s Successfully Created' % newRestaurant.name)
         session.commit()
-        return redirect(url_for('showRestaurants'))
+        return redirect(url_for('showCategories'))
     else:
         return render_template('newRestaurant.html')
 
@@ -341,7 +341,7 @@ def editRestaurant(restaurant_id):
         if request.form['name']:
             editedRestaurant.name = request.form['name']
             flash('Restaurant Successfully Edited %s' % editedRestaurant.name)
-            return redirect(url_for('showRestaurants'))
+            return redirect(url_for('showCategories'))
     else:
         return render_template('editRestaurant.html', restaurant=editedRestaurant)
 
@@ -358,7 +358,7 @@ def deleteRestaurant(restaurant_id):
         session.delete(restaurantToDelete)
         flash('%s Successfully Deleted' % restaurantToDelete.name)
         session.commit()
-        return redirect(url_for('showRestaurants', restaurant_id=restaurant_id))
+        return redirect(url_for('showCategories', restaurant_id=restaurant_id))
     else:
         return render_template('deleteRestaurant.html', restaurant=restaurantToDelete)
 
