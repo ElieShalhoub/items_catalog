@@ -303,7 +303,7 @@ def categorysJSON():
     return jsonify(categorys= [r.serialize for r in categorys])
 
 
-#Show all categorys
+#Show all categories
 @app.route('/')
 @app.route('/catalog/')
 def showCategories():
